@@ -39,6 +39,12 @@ export function createSpaIndexRoute<E extends Env>(app: Hono<E>, options: SpaInd
 	app.get('*', (c) => {
 		const requestPath = c.req.path;
 
+		// Do not serve SPA fallback for API and service routes
+		const servicePrefixes = ['/api/', '/s3/', '/media/', '/admin/', '/_health', '/_ready', '/_live', '/.well-known/'];
+		if (servicePrefixes.some(prefix => requestPath.startsWith(prefix))) {
+			return c.notFound();
+		}
+
 		if (isStaticAsset(requestPath)) {
 			const result = serveStaticFile({requestPath, resolvedStaticDir: staticDir, logger});
 			if (!result.success) {
