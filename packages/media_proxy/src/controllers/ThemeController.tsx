@@ -46,7 +46,7 @@ export function createThemeHeadHandler(deps: ThemeControllerDeps) {
 		ctx.header('Content-Type', 'text/css; charset=utf-8');
 		ctx.header('Cache-Control', 'public, max-age=31536000, immutable');
 		ctx.header('Access-Control-Allow-Origin', '*');
-		ctx.header('Content-Length', contentLength.toString());
+		
 
 		if (lastModified) {
 			ctx.header('Last-Modified', lastModified.toUTCString());
@@ -80,7 +80,7 @@ export function createThemeHandler(deps: ThemeControllerDeps) {
 		if (data instanceof PassThrough) {
 			return ctx.body(toWebReadableStream(data));
 		} else {
-			ctx.header('Content-Length', data.length.toString());
+			
 			return ctx.body(toBodyData(data));
 		}
 	};

@@ -62,6 +62,5 @@ export function setHeaders(
 		ctx.header('Content-Length', length.toString());
 		ctx.header('Content-Range', `bytes ${range.start}-${range.end}/${size}`);
 	} else {
-		ctx.header('Content-Length', size.toString());
 	}
 }
