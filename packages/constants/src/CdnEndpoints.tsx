@@ -18,6 +18,6 @@
  */
 
 export const CdnEndpoints = {
-	STATIC: 'https://fluxerstatic.com',
-	STATIC_HOST: 'fluxerstatic.com',
+	STATIC: '',
+	STATIC_HOST: '',
 } as const;
