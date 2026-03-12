@@ -33,7 +33,6 @@ import PermissionStore from '@app/stores/PermissionStore';
 import UserStore from '@app/stores/UserStore';
 import {openFilePicker} from '@app/utils/FilePickerUtils';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
-import {MAX_GUILD_SOUNDBOARD_SOUNDS} from '@fluxer/constants/src/LimitConstants';
 import type {GuildSoundboardSoundWithUser} from '@fluxer/schema/src/domains/guild/GuildSoundboardSchemas';
 import {sortBySnowflakeDesc} from '@fluxer/snowflake/src/SnowflakeUtils';
 import {Trans, useLingui} from '@lingui/react/macro';
@@ -121,9 +120,9 @@ const GuildSoundboardTab: React.FC<{guildId: string}> = observer(function GuildS
 			{canCreateExpressions && (
 				<>
 					<UploadSlotInfo
-						title={<Trans>Sound Slots</Trans>}
+						title={<Trans>Sounds</Trans>}
 						currentCount={sounds.length}
-						maxCount={MAX_GUILD_SOUNDBOARD_SOUNDS}
+						maxCount={Number.POSITIVE_INFINITY}
 						uploadButtonText={<Trans>Upload Sound</Trans>}
 						onUploadClick={handleAddSound}
 						description={

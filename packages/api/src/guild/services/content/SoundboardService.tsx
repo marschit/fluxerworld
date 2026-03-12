@@ -38,20 +38,13 @@ import type {RequestCache} from '@fluxer/api/src/middleware/RequestCacheMiddlewa
 import type {GuildSoundboardSound} from '@fluxer/api/src/models/GuildSoundboardSound';
 import type {User} from '@fluxer/api/src/models/User';
 import {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
-import {MAX_GUILD_SOUNDBOARD_SOUNDS, SOUNDBOARD_SOUND_MAX_SIZE} from '@fluxer/constants/src/LimitConstants';
+import {SOUNDBOARD_SOUND_MAX_SIZE} from '@fluxer/constants/src/LimitConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
 import type {
 	GuildSoundboardSoundResponse,
 	GuildSoundboardSoundWithUserResponse,
 } from '@fluxer/schema/src/domains/guild/GuildSoundboardSchemas';
-
-class MaxGuildSoundboardSoundsError extends Error {
-	constructor(max: number) {
-		super(`Maximum soundboard sounds reached (${max})`);
-		this.name = 'MaxGuildSoundboardSoundsError';
-	}
-}
 
 class UnknownSoundboardSoundError extends Error {
 	constructor() {
@@ -99,9 +92,6 @@ export class SoundboardService {
 		await this.contentHelpers.checkCreateExpressionsPermission({userId: user.id, guildId});
 
 		const allSounds = await this.guildRepository.listSoundboardSounds(guildId);
-		if (allSounds.length >= MAX_GUILD_SOUNDBOARD_SOUNDS) {
-			throw new MaxGuildSoundboardSoundsError(MAX_GUILD_SOUNDBOARD_SOUNDS);
-		}
 
 		const audioBuffer = this.processAudio({errorPath: 'sound', base64Audio: base64Sound});
 
