@@ -26,6 +26,7 @@ import {
 import {
 	AVATAR_MAX_SIZE,
 	EMOJI_MAX_SIZE,
+	SOUNDBOARD_SOUND_MAX_SIZE,
 	STICKER_MAX_SIZE,
 	VALID_TEMP_BAN_DURATIONS,
 } from '@fluxer/constants/src/LimitConstants';
@@ -241,6 +242,38 @@ export const GuildStickerBulkCreateRequest = z.object({
 });
 
 export type GuildStickerBulkCreateRequest = z.infer<typeof GuildStickerBulkCreateRequest>;
+
+export const GuildSoundboardSoundCreateRequest = z.object({
+	name: createStringType(2, 32)
+		.refine(
+			(value) => /^[a-zA-Z0-9_ ]+$/.test(value),
+			'Sound name can only contain letters, numbers, spaces, and underscores',
+		)
+		.describe('The name of the sound (2-32 characters)'),
+	sound: createBase64StringType(1, Math.ceil(SOUNDBOARD_SOUND_MAX_SIZE * (4 / 3))).describe(
+		'Base64-encoded audio data for the sound',
+	),
+	volume: z.number().min(0).max(1).default(1).describe('The default volume of the sound (0-1)'),
+	emoji_id: SnowflakeType.nullish().describe('The emoji ID to associate with the sound'),
+	emoji_name: createStringType(1, 64).nullish().describe('The emoji name to associate with the sound'),
+});
+
+export type GuildSoundboardSoundCreateRequest = z.infer<typeof GuildSoundboardSoundCreateRequest>;
+
+export const GuildSoundboardSoundUpdateRequest = z.object({
+	name: createStringType(2, 32)
+		.refine(
+			(value) => /^[a-zA-Z0-9_ ]+$/.test(value),
+			'Sound name can only contain letters, numbers, spaces, and underscores',
+		)
+		.optional()
+		.describe('The name of the sound (2-32 characters)'),
+	volume: z.number().min(0).max(1).optional().describe('The default volume of the sound (0-1)'),
+	emoji_id: SnowflakeType.nullish().describe('The emoji ID to associate with the sound'),
+	emoji_name: createStringType(1, 64).nullish().describe('The emoji name to associate with the sound'),
+});
+
+export type GuildSoundboardSoundUpdateRequest = z.infer<typeof GuildSoundboardSoundUpdateRequest>;
 
 export const GuildTransferOwnershipRequest = z.object({
 	new_owner_id: SnowflakeType.describe('The ID of the user to transfer ownership to'),

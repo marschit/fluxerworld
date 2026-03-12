@@ -43,6 +43,7 @@ export type StickerID = Brand<bigint, 'StickerID'>;
 export type ReportID = Brand<bigint, 'ReportID'>;
 export type MemeID = Brand<bigint, 'MemeID'>;
 export type ApplicationID = Brand<bigint, 'ApplicationID'>;
+export type SoundboardSoundID = Brand<bigint, 'SoundboardSoundID'>;
 
 export type InviteCode = Brand<string, 'InviteCode'>;
 export type VanityURLCode = Brand<string, 'VanityURLCode'>;
@@ -91,6 +92,9 @@ export function createMemeID<T extends bigint>(id: T extends BrandedValue ? neve
 }
 export function createApplicationID<T extends bigint>(id: T extends BrandedValue ? never : T): ApplicationID {
 	return brand<T, 'ApplicationID'>(id);
+}
+export function createSoundboardSoundID<T extends bigint>(id: T extends BrandedValue ? never : T): SoundboardSoundID {
+	return brand<T, 'SoundboardSoundID'>(id);
 }
 
 export function createInviteCode<T extends string>(code: T extends BrandedValue ? never : T): InviteCode {

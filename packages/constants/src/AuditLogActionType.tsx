@@ -61,6 +61,10 @@ export enum AuditLogActionType {
 	MESSAGE_BULK_DELETE = 73,
 	MESSAGE_PIN = 74,
 	MESSAGE_UNPIN = 75,
+
+	SOUNDBOARD_SOUND_CREATE = 80,
+	SOUNDBOARD_SOUND_UPDATE = 81,
+	SOUNDBOARD_SOUND_DELETE = 82,
 }
 
 export const ALL_AUDIT_LOG_ACTION_TYPES: ReadonlyArray<AuditLogActionType> = [
@@ -99,4 +103,7 @@ export const ALL_AUDIT_LOG_ACTION_TYPES: ReadonlyArray<AuditLogActionType> = [
 	AuditLogActionType.MESSAGE_BULK_DELETE,
 	AuditLogActionType.MESSAGE_PIN,
 	AuditLogActionType.MESSAGE_UNPIN,
+	AuditLogActionType.SOUNDBOARD_SOUND_CREATE,
+	AuditLogActionType.SOUNDBOARD_SOUND_UPDATE,
+	AuditLogActionType.SOUNDBOARD_SOUND_DELETE,
 ];

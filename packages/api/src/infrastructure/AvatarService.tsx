@@ -355,6 +355,15 @@ export class AvatarService {
 		await this.storageService.uploadAvatar({prefix, key: stickerId.toString(), body: imageBuffer});
 	}
 
+	async uploadSoundboardSound(params: {
+		prefix: 'soundboard_sounds';
+		soundId: bigint;
+		audioBuffer: Uint8Array;
+	}): Promise<void> {
+		const {prefix, soundId, audioBuffer} = params;
+		await this.storageService.uploadAvatar({prefix, key: soundId.toString(), body: audioBuffer});
+	}
+
 	async checkStickerAnimated(stickerId: bigint): Promise<boolean | null> {
 		try {
 			const metadata = await this.mediaService.getMetadata({

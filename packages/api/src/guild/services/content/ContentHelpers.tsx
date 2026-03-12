@@ -17,14 +17,19 @@
  * along with Fluxer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type {EmojiID, GuildID, StickerID, UserID} from '@fluxer/api/src/BrandedTypes';
+import type {EmojiID, GuildID, SoundboardSoundID, StickerID, UserID} from '@fluxer/api/src/BrandedTypes';
 import type {GuildAuditLogService} from '@fluxer/api/src/guild/GuildAuditLogService';
 import type {GuildAuditLogChange} from '@fluxer/api/src/guild/GuildAuditLogTypes';
 import type {IGatewayService} from '@fluxer/api/src/infrastructure/IGatewayService';
 import {Logger} from '@fluxer/api/src/Logger';
 import type {GuildEmoji} from '@fluxer/api/src/models/GuildEmoji';
+import type {GuildSoundboardSound} from '@fluxer/api/src/models/GuildSoundboardSound';
 import type {GuildSticker} from '@fluxer/api/src/models/GuildSticker';
-import {serializeEmojiForAudit, serializeStickerForAudit} from '@fluxer/api/src/utils/AuditSerializationUtils';
+import {
+	serializeEmojiForAudit,
+	serializeSoundboardSoundForAudit,
+	serializeStickerForAudit,
+} from '@fluxer/api/src/utils/AuditSerializationUtils';
 import {hasPermission, requirePermission} from '@fluxer/api/src/utils/PermissionUtils';
 import type {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
@@ -75,11 +80,15 @@ export class ContentHelpers {
 		return serializeStickerForAudit(sticker);
 	}
 
+	serializeSoundboardSoundForAudit(sound: GuildSoundboardSound): Record<string, unknown> {
+		return serializeSoundboardSoundForAudit(sound);
+	}
+
 	async recordAuditLog(params: {
 		guildId: GuildID;
 		userId: UserID;
 		action: AuditLogActionType;
-		targetId?: GuildID | EmojiID | StickerID | string | null;
+		targetId?: GuildID | EmojiID | StickerID | SoundboardSoundID | string | null;
 		auditLogReason?: string | null;
 		metadata?: Map<string, string> | Record<string, string>;
 		changes?: GuildAuditLogChange | null;

@@ -17,9 +17,10 @@
  * along with Fluxer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type {EmojiID, GuildID, StickerID} from '@fluxer/api/src/BrandedTypes';
-import type {GuildEmojiRow, GuildStickerRow} from '@fluxer/api/src/database/types/GuildTypes';
+import type {EmojiID, GuildID, SoundboardSoundID, StickerID} from '@fluxer/api/src/BrandedTypes';
+import type {GuildEmojiRow, GuildSoundboardSoundRow, GuildStickerRow} from '@fluxer/api/src/database/types/GuildTypes';
 import type {GuildEmoji} from '@fluxer/api/src/models/GuildEmoji';
+import type {GuildSoundboardSound} from '@fluxer/api/src/models/GuildSoundboardSound';
 import type {GuildSticker} from '@fluxer/api/src/models/GuildSticker';
 
 export abstract class IGuildContentRepository {
@@ -35,4 +36,8 @@ export abstract class IGuildContentRepository {
 	abstract countStickers(guildId: GuildID): Promise<number>;
 	abstract upsertSticker(data: GuildStickerRow): Promise<GuildSticker>;
 	abstract deleteSticker(guildId: GuildID, stickerId: StickerID): Promise<void>;
+	abstract getSoundboardSound(soundId: SoundboardSoundID, guildId: GuildID): Promise<GuildSoundboardSound | null>;
+	abstract listSoundboardSounds(guildId: GuildID): Promise<Array<GuildSoundboardSound>>;
+	abstract upsertSoundboardSound(data: GuildSoundboardSoundRow): Promise<GuildSoundboardSound>;
+	abstract deleteSoundboardSound(guildId: GuildID, soundId: SoundboardSoundID): Promise<void>;
 }

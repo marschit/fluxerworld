@@ -20,6 +20,7 @@
 import type {Channel} from '@fluxer/api/src/models/Channel';
 import type {Guild} from '@fluxer/api/src/models/Guild';
 import type {GuildEmoji} from '@fluxer/api/src/models/GuildEmoji';
+import type {GuildSoundboardSound} from '@fluxer/api/src/models/GuildSoundboardSound';
 import type {GuildSticker} from '@fluxer/api/src/models/GuildSticker';
 import {toIdString, toSortedIdArray} from '@fluxer/api/src/utils/IdUtils';
 
@@ -90,5 +91,14 @@ export function serializeStickerForAudit(sticker: GuildSticker): Record<string, 
 		description: sticker.description,
 		animated: sticker.animated,
 		creator_id: sticker.creatorId.toString(),
+	};
+}
+
+export function serializeSoundboardSoundForAudit(sound: GuildSoundboardSound): Record<string, unknown> {
+	return {
+		sound_id: sound.id.toString(),
+		name: sound.name,
+		volume: sound.volume,
+		creator_id: sound.creatorId.toString(),
 	};
 }

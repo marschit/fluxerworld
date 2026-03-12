@@ -17,7 +17,7 @@
  * along with Fluxer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type {EmojiID, GuildID, StickerID} from '@fluxer/api/src/BrandedTypes';
+import type {EmojiID, GuildID, SoundboardSoundID, StickerID} from '@fluxer/api/src/BrandedTypes';
 import {
 	BatchBuilder,
 	buildPatchFromData,
@@ -27,14 +27,24 @@ import {
 } from '@fluxer/api/src/database/Cassandra';
 import {
 	GUILD_EMOJI_COLUMNS,
+	GUILD_SOUNDBOARD_SOUND_COLUMNS,
 	GUILD_STICKER_COLUMNS,
 	type GuildEmojiRow,
+	type GuildSoundboardSoundRow,
 	type GuildStickerRow,
 } from '@fluxer/api/src/database/types/GuildTypes';
 import {IGuildContentRepository} from '@fluxer/api/src/guild/repositories/IGuildContentRepository';
 import {GuildEmoji} from '@fluxer/api/src/models/GuildEmoji';
+import {GuildSoundboardSound} from '@fluxer/api/src/models/GuildSoundboardSound';
 import {GuildSticker} from '@fluxer/api/src/models/GuildSticker';
-import {GuildEmojis, GuildEmojisByEmojiId, GuildStickers, GuildStickersByStickerId} from '@fluxer/api/src/Tables';
+import {
+	GuildEmojis,
+	GuildEmojisByEmojiId,
+	GuildSoundboardSounds,
+	GuildSoundboardSoundsBySoundId,
+	GuildStickers,
+	GuildStickersByStickerId,
+} from '@fluxer/api/src/Tables';
 
 const FETCH_GUILD_EMOJIS_BY_GUILD_ID_QUERY = GuildEmojis.selectCql({
 	where: GuildEmojis.where.eq('guild_id'),
@@ -61,6 +71,15 @@ const FETCH_GUILD_STICKER_BY_ID_QUERY = GuildStickers.selectCql({
 
 const FETCH_GUILD_STICKER_BY_STICKER_ID_ONLY_QUERY = GuildStickersByStickerId.selectCql({
 	where: GuildStickersByStickerId.where.eq('sticker_id'),
+	limit: 1,
+});
+
+const FETCH_GUILD_SOUNDBOARD_SOUNDS_BY_GUILD_ID_QUERY = GuildSoundboardSounds.selectCql({
+	where: GuildSoundboardSounds.where.eq('guild_id'),
+});
+
+const FETCH_GUILD_SOUNDBOARD_SOUND_BY_ID_QUERY = GuildSoundboardSounds.selectCql({
+	where: [GuildSoundboardSounds.where.eq('guild_id'), GuildSoundboardSounds.where.eq('sound_id')],
 	limit: 1,
 });
 
@@ -190,6 +209,59 @@ export class GuildContentRepository extends IGuildContentRepository {
 			}),
 		);
 		batch.addPrepared(GuildStickersByStickerId.deleteByPk({sticker_id: stickerId}));
+		await batch.execute();
+	}
+
+	async getSoundboardSound(soundId: SoundboardSoundID, guildId: GuildID): Promise<GuildSoundboardSound | null> {
+		const sound = await fetchOne<GuildSoundboardSoundRow>(FETCH_GUILD_SOUNDBOARD_SOUND_BY_ID_QUERY, {
+			guild_id: guildId,
+			sound_id: soundId,
+		});
+		return sound ? new GuildSoundboardSound(sound) : null;
+	}
+
+	async listSoundboardSounds(guildId: GuildID): Promise<Array<GuildSoundboardSound>> {
+		const sounds = await fetchMany<GuildSoundboardSoundRow>(FETCH_GUILD_SOUNDBOARD_SOUNDS_BY_GUILD_ID_QUERY, {
+			guild_id: guildId,
+		});
+		return sounds.map((sound) => new GuildSoundboardSound(sound));
+	}
+
+	async upsertSoundboardSound(
+		data: GuildSoundboardSoundRow,
+		oldData?: GuildSoundboardSoundRow | null,
+	): Promise<GuildSoundboardSound> {
+		const guildId = data.guild_id;
+		const soundId = data.sound_id;
+
+		const result = await executeVersionedUpdate<GuildSoundboardSoundRow, 'guild_id' | 'sound_id'>(
+			async () =>
+				fetchOne<GuildSoundboardSoundRow>(FETCH_GUILD_SOUNDBOARD_SOUND_BY_ID_QUERY, {
+					guild_id: guildId,
+					sound_id: soundId,
+				}),
+			(current) => ({
+				pk: {guild_id: guildId, sound_id: soundId},
+				patch: buildPatchFromData(data, current, GUILD_SOUNDBOARD_SOUND_COLUMNS, ['guild_id', 'sound_id']),
+			}),
+			GuildSoundboardSounds,
+			{initialData: oldData},
+		);
+
+		await fetchOne(GuildSoundboardSoundsBySoundId.insert(data));
+
+		return new GuildSoundboardSound({...data, version: result.finalVersion ?? 1});
+	}
+
+	async deleteSoundboardSound(guildId: GuildID, soundId: SoundboardSoundID): Promise<void> {
+		const batch = new BatchBuilder();
+		batch.addPrepared(
+			GuildSoundboardSounds.deleteByPk({
+				guild_id: guildId,
+				sound_id: soundId,
+			}),
+		);
+		batch.addPrepared(GuildSoundboardSoundsBySoundId.deleteByPk({sound_id: soundId}));
 		await batch.execute();
 	}
 }

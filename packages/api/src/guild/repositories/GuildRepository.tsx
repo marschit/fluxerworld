@@ -17,7 +17,7 @@
  * along with Fluxer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type {EmojiID, GuildID, RoleID, StickerID, UserID} from '@fluxer/api/src/BrandedTypes';
+import type {EmojiID, GuildID, RoleID, SoundboardSoundID, StickerID, UserID} from '@fluxer/api/src/BrandedTypes';
 import type {
 	GuildAuditLogRow,
 	GuildBanRow,
@@ -25,6 +25,7 @@ import type {
 	GuildMemberRow,
 	GuildRoleRow,
 	GuildRow,
+	GuildSoundboardSoundRow,
 	GuildStickerRow,
 } from '@fluxer/api/src/database/types/GuildTypes';
 import {GuildContentRepository} from '@fluxer/api/src/guild/repositories/GuildContentRepository';
@@ -39,6 +40,7 @@ import type {GuildBan} from '@fluxer/api/src/models/GuildBan';
 import type {GuildEmoji} from '@fluxer/api/src/models/GuildEmoji';
 import type {GuildMember} from '@fluxer/api/src/models/GuildMember';
 import type {GuildRole} from '@fluxer/api/src/models/GuildRole';
+import type {GuildSoundboardSound} from '@fluxer/api/src/models/GuildSoundboardSound';
 import type {GuildSticker} from '@fluxer/api/src/models/GuildSticker';
 import type {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
 
@@ -267,5 +269,21 @@ export class GuildRepository implements IGuildRepositoryAggregate {
 
 	async deleteSticker(guildId: GuildID, stickerId: StickerID): Promise<void> {
 		return await this.contentRepo.deleteSticker(guildId, stickerId);
+	}
+
+	async getSoundboardSound(soundId: SoundboardSoundID, guildId: GuildID): Promise<GuildSoundboardSound | null> {
+		return await this.contentRepo.getSoundboardSound(soundId, guildId);
+	}
+
+	async listSoundboardSounds(guildId: GuildID): Promise<Array<GuildSoundboardSound>> {
+		return await this.contentRepo.listSoundboardSounds(guildId);
+	}
+
+	async upsertSoundboardSound(data: GuildSoundboardSoundRow): Promise<GuildSoundboardSound> {
+		return await this.contentRepo.upsertSoundboardSound(data);
+	}
+
+	async deleteSoundboardSound(guildId: GuildID, soundId: SoundboardSoundID): Promise<void> {
+		return await this.contentRepo.deleteSoundboardSound(guildId, soundId);
 	}
 }

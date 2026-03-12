@@ -105,6 +105,8 @@ import {
 	GUILD_MEMBER_BY_USER_ID_COLUMNS,
 	GUILD_MEMBER_COLUMNS,
 	GUILD_ROLE_COLUMNS,
+	GUILD_SOUNDBOARD_SOUND_BY_SOUND_ID_COLUMNS,
+	GUILD_SOUNDBOARD_SOUND_COLUMNS,
 	GUILD_STICKER_BY_STICKER_ID_COLUMNS,
 	GUILD_STICKER_COLUMNS,
 	type GuildAuditLogRow,
@@ -114,6 +116,7 @@ import {
 	type GuildMemberRow,
 	type GuildRoleRow,
 	type GuildRow,
+	type GuildSoundboardSoundRow,
 	type GuildStickerRow,
 } from '@fluxer/api/src/database/types/GuildTypes';
 import {
@@ -419,6 +422,18 @@ export const GuildStickersByStickerId = defineTable<GuildStickerRow, 'sticker_id
 	name: 'guild_stickers_by_sticker_id',
 	columns: GUILD_STICKER_BY_STICKER_ID_COLUMNS,
 	primaryKey: ['sticker_id'],
+});
+
+export const GuildSoundboardSounds = defineTable<GuildSoundboardSoundRow, 'guild_id' | 'sound_id'>({
+	name: 'guild_soundboard_sounds',
+	columns: GUILD_SOUNDBOARD_SOUND_COLUMNS,
+	primaryKey: ['guild_id', 'sound_id'],
+});
+
+export const GuildSoundboardSoundsBySoundId = defineTable<GuildSoundboardSoundRow, 'sound_id'>({
+	name: 'guild_soundboard_sounds_by_sound_id',
+	columns: GUILD_SOUNDBOARD_SOUND_BY_SOUND_ID_COLUMNS,
+	primaryKey: ['sound_id'],
 });
 
 export const GuildRoles = defineTable<GuildRoleRow, 'guild_id' | 'role_id'>({

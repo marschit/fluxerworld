@@ -17,7 +17,7 @@
  * along with Fluxer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type {ChannelID, EmojiID, GuildID, InviteCode, RoleID, StickerID, UserID} from '@fluxer/api/src/BrandedTypes';
+import type {ChannelID, EmojiID, GuildID, InviteCode, RoleID, SoundboardSoundID, StickerID, UserID} from '@fluxer/api/src/BrandedTypes';
 import {createUserID, createWebhookID} from '@fluxer/api/src/BrandedTypes';
 import type {IChannelRepository} from '@fluxer/api/src/channel/IChannelRepository';
 import type {ChannelService} from '@fluxer/api/src/channel/services/ChannelService';
@@ -774,6 +774,51 @@ export class GuildService {
 				guild_id: params.guildId.toString(),
 			},
 		});
+	}
+
+	async getSoundboardSounds(params: {
+		userId: UserID;
+		guildId: GuildID;
+		requestCache: RequestCache;
+	}) {
+		return this.content.getSoundboardSounds(params);
+	}
+
+	async createSoundboardSound(
+		params: {
+			user: User;
+			guildId: GuildID;
+			name: string;
+			sound: string;
+			volume?: number;
+			emojiId?: bigint | null;
+			emojiName?: string | null;
+		},
+		auditLogReason?: string | null,
+	) {
+		return this.content.createSoundboardSound(params, auditLogReason);
+	}
+
+	async updateSoundboardSound(
+		params: {
+			userId: UserID;
+			guildId: GuildID;
+			soundId: SoundboardSoundID;
+			name?: string;
+			volume?: number;
+			emojiId?: bigint | null;
+			emojiName?: string | null;
+		},
+		auditLogReason?: string | null,
+	) {
+		return this.content.updateSoundboardSound(params, auditLogReason);
+	}
+
+	async deleteSoundboardSound(
+		params: {userId: UserID; guildId: GuildID; soundId: SoundboardSoundID},
+		auditLogReason?: string | null,
+	) {
+		await this.content.deleteSoundboardSound(params, auditLogReason);
 	}
 
 	async getChannels(params: {

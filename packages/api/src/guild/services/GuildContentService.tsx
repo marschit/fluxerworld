@@ -17,12 +17,13 @@
  * along with Fluxer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type {EmojiID, GuildID, StickerID, UserID} from '@fluxer/api/src/BrandedTypes';
+import type {EmojiID, GuildID, SoundboardSoundID, StickerID, UserID} from '@fluxer/api/src/BrandedTypes';
 import type {GuildAuditLogService} from '@fluxer/api/src/guild/GuildAuditLogService';
 import type {IGuildRepositoryAggregate} from '@fluxer/api/src/guild/repositories/IGuildRepositoryAggregate';
 import {ContentHelpers} from '@fluxer/api/src/guild/services/content/ContentHelpers';
 import {EmojiService} from '@fluxer/api/src/guild/services/content/EmojiService';
 import {ExpressionAssetPurger} from '@fluxer/api/src/guild/services/content/ExpressionAssetPurger';
+import {SoundboardService} from '@fluxer/api/src/guild/services/content/SoundboardService';
 import {StickerService} from '@fluxer/api/src/guild/services/content/StickerService';
 import type {AvatarService} from '@fluxer/api/src/infrastructure/AvatarService';
 import type {IAssetDeletionQueue} from '@fluxer/api/src/infrastructure/IAssetDeletionQueue';
@@ -38,12 +39,17 @@ import type {
 	GuildStickerResponse,
 	GuildStickerWithUserResponse,
 } from '@fluxer/schema/src/domains/guild/GuildEmojiSchemas';
+import type {
+	GuildSoundboardSoundResponse,
+	GuildSoundboardSoundWithUserResponse,
+} from '@fluxer/schema/src/domains/guild/GuildSoundboardSchemas';
 import type {UserPartialResponse} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
 
 export class GuildContentService {
 	private readonly contentHelpers: ContentHelpers;
 	private readonly emojiService: EmojiService;
 	private readonly stickerService: StickerService;
+	private readonly soundboardService: SoundboardService;
 
 	constructor(
 		guildRepository: IGuildRepositoryAggregate,
@@ -76,6 +82,14 @@ export class GuildContentService {
 			this.contentHelpers,
 			expressionAssetPurger,
 			limitConfigService,
+		);
+		this.soundboardService = new SoundboardService(
+			guildRepository,
+			userCacheService,
+			gatewayService,
+			avatarService,
+			snowflakeService,
+			this.contentHelpers,
 		);
 	}
 
@@ -191,5 +205,50 @@ export class GuildContentService {
 		auditLogReason?: string | null,
 	): Promise<void> {
 		return this.stickerService.deleteSticker(params, auditLogReason);
+	}
+
+	async getSoundboardSounds(params: {
+		userId: UserID;
+		guildId: GuildID;
+		requestCache: RequestCache;
+	}): Promise<Array<GuildSoundboardSoundWithUserResponse>> {
+		return this.soundboardService.getSoundboardSounds(params);
+	}
+
+	async createSoundboardSound(
+		params: {
+			user: User;
+			guildId: GuildID;
+			name: string;
+			sound: string;
+			volume?: number;
+			emojiId?: bigint | null;
+			emojiName?: string | null;
+		},
+		auditLogReason?: string | null,
+	): Promise<GuildSoundboardSoundResponse> {
+		return this.soundboardService.createSoundboardSound(params, auditLogReason);
+	}
+
+	async updateSoundboardSound(
+		params: {
+			userId: UserID;
+			guildId: GuildID;
+			soundId: SoundboardSoundID;
+			name?: string;
+			volume?: number;
+			emojiId?: bigint | null;
+			emojiName?: string | null;
+		},
+		auditLogReason?: string | null,
+	): Promise<GuildSoundboardSoundResponse> {
+		return this.soundboardService.updateSoundboardSound(params, auditLogReason);
+	}
+
+	async deleteSoundboardSound(
+		params: {userId: UserID; guildId: GuildID; soundId: SoundboardSoundID},
+		auditLogReason?: string | null,
+	): Promise<void> {
+		return this.soundboardService.deleteSoundboardSound(params, auditLogReason);
 	}
 }
