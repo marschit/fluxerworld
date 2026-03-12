@@ -27,6 +27,7 @@ import {Validator} from '@fluxer/api/src/Validator';
 import {GuildIdParam, GuildIdSoundIdParam} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 import {
 	GuildSoundboardSoundCreateRequest,
+	GuildSoundboardSoundSendRequest,
 	GuildSoundboardSoundUpdateRequest,
 } from '@fluxer/schema/src/domains/guild/GuildRequestSchemas';
 import {
@@ -138,6 +139,7 @@ export function GuildSoundboardController(app: HonoApp) {
 		RateLimitMiddleware(RateLimitConfigs.GUILD_SOUNDBOARD_SOUND_SEND),
 		LoginRequired,
 		Validator('param', GuildIdSoundIdParam),
+		Validator('json', GuildSoundboardSoundSendRequest),
 		OpenAPI({
 			operationId: 'send_guild_soundboard_sound',
 			summary: 'Send a soundboard sound to voice channel',
@@ -149,10 +151,11 @@ export function GuildSoundboardController(app: HonoApp) {
 		}),
 		async (ctx) => {
 			const {guild_id, sound_id} = ctx.req.valid('param');
+			const {channel_id} = ctx.req.valid('json');
 			const userId = ctx.get('user').id;
 			const guildId = createGuildID(guild_id);
 			const soundId = createSoundboardSoundID(sound_id);
-			await ctx.get('guildService').sendSoundboardSound({userId, guildId, soundId});
+			await ctx.get('guildService').sendSoundboardSound({userId, guildId, soundId, channelId: channel_id});
 			return ctx.body(null, 204);
 		},
 	);

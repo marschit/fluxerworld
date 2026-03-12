@@ -275,6 +275,12 @@ export const GuildSoundboardSoundUpdateRequest = z.object({
 
 export type GuildSoundboardSoundUpdateRequest = z.infer<typeof GuildSoundboardSoundUpdateRequest>;
 
+export const GuildSoundboardSoundSendRequest = z.object({
+	channel_id: z.string().describe('The voice channel ID to send the sound to'),
+});
+
+export type GuildSoundboardSoundSendRequest = z.infer<typeof GuildSoundboardSoundSendRequest>;
+
 export const GuildTransferOwnershipRequest = z.object({
 	new_owner_id: SnowflakeType.describe('The ID of the user to transfer ownership to'),
 	password: PasswordType.optional().describe('The current owner password for verification'),

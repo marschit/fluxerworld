@@ -67,9 +67,9 @@ export async function update(
 	}
 }
 
-export async function send(guildId: string, soundId: string): Promise<void> {
+export async function send(guildId: string, soundId: string, channelId: string): Promise<void> {
 	try {
-		await http.post({url: Endpoints.GUILD_SOUNDBOARD_SOUND_SEND(guildId, soundId)});
+		await http.post({url: Endpoints.GUILD_SOUNDBOARD_SOUND_SEND(guildId, soundId), body: {channel_id: channelId}});
 		logger.debug(`Sent soundboard sound ${soundId} in guild ${guildId}`);
 	} catch (error) {
 		logger.error(`Failed to send soundboard sound ${soundId} in guild ${guildId}:`, error);

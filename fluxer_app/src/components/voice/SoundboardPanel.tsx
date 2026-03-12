@@ -38,6 +38,7 @@ function getSoundboardSoundURL(soundId: string): string {
 export const SoundboardPanel = observer(function SoundboardPanel() {
 	const {t} = useLingui();
 	const guildId = MediaEngineStore.guildId;
+	const channelId = MediaEngineStore.channelId;
 	const [loading, setLoading] = useState(false);
 	const [playingId, setPlayingId] = useState<string | null>(null);
 	const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -93,13 +94,13 @@ export const SoundboardPanel = observer(function SoundboardPanel() {
 
 			void audio.play();
 
-			if (guildId) {
-				GuildSoundboardActionCreators.send(guildId, soundId).catch((err) => {
+			if (guildId && channelId) {
+				GuildSoundboardActionCreators.send(guildId, soundId, channelId).catch((err) => {
 					logger.error('Failed to broadcast sound to voice channel:', err);
 				});
 			}
 		},
-		[playingId, guildId],
+		[playingId, guildId, channelId],
 	);
 
 	const handleClose = useCallback(() => {

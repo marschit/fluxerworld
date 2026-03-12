@@ -209,14 +209,10 @@ export class SoundboardService {
 		userId: UserID;
 		guildId: GuildID;
 		soundId: SoundboardSoundID;
+		channelId: string;
 	}): Promise<void> {
-		const {userId, guildId, soundId} = params;
+		const {userId, guildId, soundId, channelId} = params;
 		await this.contentHelpers.getGuildData({userId, guildId});
-
-		const voiceState = await this.gatewayService.getVoiceState({guildId, userId});
-		if (!voiceState?.channel_id) {
-			throw new Error('User is not in a voice channel');
-		}
 
 		const allSounds = await this.guildRepository.listSoundboardSounds(guildId);
 		const sound = allSounds.find((s) => s.id === soundId);
@@ -227,7 +223,7 @@ export class SoundboardService {
 			event: 'VOICE_CHANNEL_EFFECT_SEND',
 			data: {
 				guild_id: guildId,
-				channel_id: voiceState.channel_id,
+				channel_id: channelId,
 				user_id: userId,
 				sound_id: soundId,
 				sound_volume: sound.volume,
