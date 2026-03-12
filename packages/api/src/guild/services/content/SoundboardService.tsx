@@ -222,10 +222,10 @@ export class SoundboardService {
 			guildId,
 			event: 'VOICE_CHANNEL_EFFECT_SEND',
 			data: {
-				guild_id: guildId,
+				guild_id: guildId.toString(),
 				channel_id: channelId,
-				user_id: userId,
-				sound_id: soundId,
+				user_id: userId.toString(),
+				sound_id: soundId.toString(),
 				sound_volume: sound.volume,
 			},
 		});
