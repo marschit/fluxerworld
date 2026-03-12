@@ -116,6 +116,24 @@
 	background-color: var(--voice-surface-5);
 }
 
+.buttonSoundboardOn {
+	background-color: var(--brand-500);
+	color: white;
+}
+
+.buttonSoundboardOn:hover {
+	background-color: var(--brand-560);
+}
+
+.buttonSoundboardOff {
+	background-color: var(--voice-surface-4);
+	color: var(--text-primary);
+}
+
+.buttonSoundboardOff:hover {
+	background-color: var(--voice-surface-5);
+}
+
 .buttonMoreOptions {
 	background-color: var(--voice-surface-4);
 	color: var(--text-primary);

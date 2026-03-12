@@ -42,6 +42,7 @@ import {handleGuildRoleCreate} from '@app/stores/gateway/handlers/guild/GuildRol
 import {handleGuildRoleDelete} from '@app/stores/gateway/handlers/guild/GuildRoleDelete';
 import {handleGuildRoleUpdate} from '@app/stores/gateway/handlers/guild/GuildRoleUpdate';
 import {handleGuildRoleUpdateBulk} from '@app/stores/gateway/handlers/guild/GuildRoleUpdateBulk';
+import {handleGuildSoundboardSoundsUpdate} from '@app/stores/gateway/handlers/guild/GuildSoundboardSoundsUpdate';
 import {handleGuildStickersUpdate} from '@app/stores/gateway/handlers/guild/GuildStickersUpdate';
 import {handleGuildSync} from '@app/stores/gateway/handlers/guild/GuildSync';
 import {handleGuildUpdate} from '@app/stores/gateway/handlers/guild/GuildUpdate';
@@ -114,6 +115,7 @@ export function createHandlerRegistry(): GatewayHandlerRegistry {
 	registry.set('GUILD_BAN_REMOVE', handleGuildBan as GatewayEventHandler);
 	registry.set('GUILD_EMOJIS_UPDATE', handleGuildEmojisUpdate as GatewayEventHandler);
 	registry.set('GUILD_STICKERS_UPDATE', handleGuildStickersUpdate as GatewayEventHandler);
+	registry.set('GUILD_SOUNDBOARD_SOUNDS_UPDATE', handleGuildSoundboardSoundsUpdate as GatewayEventHandler);
 	registry.set('GUILD_SYNC', handleGuildSync as GatewayEventHandler);
 	registry.set('GUILD_MEMBER_ADD', handleGuildMemberAdd as GatewayEventHandler);
 	registry.set('GUILD_MEMBER_UPDATE', handleGuildMemberUpdate as GatewayEventHandler);

@@ -34,6 +34,7 @@ import PermissionStore from '@app/stores/PermissionStore';
 import PresenceStore from '@app/stores/PresenceStore';
 import QuickSwitcherStore from '@app/stores/QuickSwitcherStore';
 import RecentMentionsStore from '@app/stores/RecentMentionsStore';
+import SoundboardStore from '@app/stores/SoundboardStore';
 import StickerStore from '@app/stores/StickerStore';
 import MediaEngineStore from '@app/stores/voice/MediaEngineFacade';
 import WebhookStore from '@app/stores/WebhookStore';
@@ -53,6 +54,7 @@ export function handleGuildDelete(data: GuildDeletePayload, _context: GatewayHan
 	GuildVerificationStore.handleGuildDelete(data.id);
 	ChannelStore.handleGuildDelete({guildId: data.id});
 	StickerStore.handleGuildDelete(data.id);
+	SoundboardStore.handleGuildDelete(data.id);
 	EmojiStore.handleGuildDelete({guildId: data.id});
 	PermissionStore.handleGuild();
 	InviteStore.handleGuildDelete(data.id);

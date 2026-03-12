@@ -40,6 +40,7 @@ import {MenuItemSubmenu} from '@app/components/uikit/context_menu/MenuItemSubmen
 import FocusRing from '@app/components/uikit/focus_ring/FocusRing';
 import {TooltipWithKeybind} from '@app/components/uikit/keybind_hint/KeybindHint';
 import {Tooltip} from '@app/components/uikit/tooltip/Tooltip';
+import {SoundboardPanel} from '@app/components/voice/SoundboardPanel';
 import {getStreamKey} from '@app/components/voice/StreamKeys';
 import styles from '@app/components/voice/VoiceControlBar.module.css';
 import {parseVoiceParticipantIdentity} from '@app/components/voice/VoiceParticipantSpeakingUtils';
@@ -49,6 +50,7 @@ import {useMediaDevices} from '@app/hooks/useMediaDevices';
 import {Logger} from '@app/lib/Logger';
 import KeybindStore from '@app/stores/KeybindStore';
 import LocalVoiceStateStore from '@app/stores/LocalVoiceStateStore';
+import SoundboardStore from '@app/stores/SoundboardStore';
 import MobileLayoutStore from '@app/stores/MobileLayoutStore';
 import VoiceCallLayoutStore from '@app/stores/VoiceCallLayoutStore';
 import VoiceSettingsStore from '@app/stores/VoiceSettingsStore';
@@ -72,6 +74,7 @@ import {
 	MicrophoneIcon,
 	MicrophoneSlashIcon,
 	MonitorPlayIcon,
+	MusicNoteIcon,
 	PhoneXIcon,
 	SpeakerHighIcon,
 	SpeakerSlashIcon,
@@ -739,6 +742,18 @@ const VoiceControlBarInner = observer(function VoiceControlBarInner() {
 				</FocusRing>
 			</Tooltip>
 
+			<Tooltip text={SoundboardStore.panelOpen ? t`Close Soundboard` : t`Soundboard`}>
+				<FocusRing offset={-2}>
+					<button
+						type="button"
+						className={clsx(styles.button, SoundboardStore.panelOpen ? styles.buttonSoundboardOn : styles.buttonSoundboardOff)}
+						onClick={() => SoundboardStore.togglePanel()}
+					>
+						<MusicNoteIcon weight="fill" className={styles.icon} />
+					</button>
+				</FocusRing>
+			</Tooltip>
+
 			<Tooltip text={t`More Options`}>
 				<FocusRing offset={-2}>
 					<button
@@ -777,6 +792,8 @@ const VoiceControlBarInner = observer(function VoiceControlBarInner() {
 					<VoiceMoreOptionsBottomSheet isOpen={moreOptionsOpen} onClose={() => setMoreOptionsOpen(false)} />
 				</>
 			)}
+
+			{SoundboardStore.panelOpen && <SoundboardPanel />}
 		</div>
 	);
 });
