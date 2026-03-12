@@ -24,6 +24,7 @@ import GuildEmojiTab from '@app/components/modals/guild_tabs/GuildEmojiTab';
 import GuildInvitesTab from '@app/components/modals/guild_tabs/GuildInvitesTab';
 import GuildModerationTab from '@app/components/modals/guild_tabs/GuildModerationTab';
 import GuildRolesTab from '@app/components/modals/guild_tabs/GuildRolesTab';
+import GuildSoundboardTab from '@app/components/modals/guild_tabs/GuildSoundboardTab';
 import GuildStickersTab from '@app/components/modals/guild_tabs/GuildStickersTab';
 import GuildVanityURLTab from '@app/components/modals/guild_tabs/GuildVanityURLTab';
 import GuildWebhooksTab from '@app/components/modals/guild_tabs/GuildWebhooksTab';
@@ -40,6 +41,7 @@ import {
 	type Icon,
 	type IconWeight,
 	LinkIcon,
+	MusicNoteIcon,
 	ProhibitIcon,
 	ShieldIcon,
 	SmileyIcon,
@@ -55,6 +57,7 @@ export type GuildSettingsTabType =
 	| 'roles'
 	| 'emoji'
 	| 'stickers'
+	| 'soundboard'
 	| 'moderation'
 	| 'audit_log'
 	| 'webhooks'
@@ -118,6 +121,14 @@ const GUILD_SETTINGS_TABS_DESCRIPTORS: Array<GuildSettingsTabDescriptor> = [
 		label: msg`Custom Stickers`,
 		icon: StickerIcon,
 		component: GuildStickersTab,
+		permission: [Permissions.CREATE_EXPRESSIONS, Permissions.MANAGE_EXPRESSIONS],
+	},
+	{
+		type: 'soundboard',
+		category: 'guild_settings',
+		label: msg`Soundboard`,
+		icon: MusicNoteIcon,
+		component: GuildSoundboardTab,
 		permission: [Permissions.CREATE_EXPRESSIONS, Permissions.MANAGE_EXPRESSIONS],
 	},
 	{
