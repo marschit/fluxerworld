@@ -328,6 +328,18 @@ export async function createMediaProxyApp(options: CreateMediaProxyAppOptions): 
 		app.get('/embed-splashes/:id/:filename', async (ctx) => handleImageRoute(ctx, 'embed-splashes'));
 		app.get('/emojis/:id', async (ctx) => handleSimpleImageRoute(ctx, 'emojis'));
 		app.get('/stickers/:id', handleStickerRoute);
+		app.get('/soundboard_sounds/:id', async (ctx) => {
+			const {id} = ctx.req.param();
+			if (!id) throw new HTTPException(400);
+			const s3Key = `soundboard_sounds/${id}`;
+			const result = await s3Utils.readS3Object(config.s3.bucketCdn, s3Key);
+			ctx.header('Content-Type', result.contentType);
+			ctx.header('Cache-Control', 'public, max-age=31536000, immutable');
+			if (result.lastModified) {
+				ctx.header('Last-Modified', result.lastModified.toUTCString());
+			}
+			return ctx.body(result.data);
+		});
 		app.get('/guilds/:guild_id/users/:user_id/avatars/:filename', async (ctx) =>
 			handleGuildMemberImageRoute(ctx, 'avatars'),
 		);
