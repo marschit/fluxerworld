@@ -81,6 +81,7 @@ import {handleUserNoteUpdate} from '@app/stores/gateway/handlers/user/UserNoteUp
 import {handleUserPinnedDmsUpdate} from '@app/stores/gateway/handlers/user/UserPinnedDmsUpdate';
 import {handleUserSettingsUpdate} from '@app/stores/gateway/handlers/user/UserSettingsUpdate';
 import {handleUserUpdate} from '@app/stores/gateway/handlers/user/UserUpdate';
+import {handleVoiceChannelEffectSend} from '@app/stores/gateway/handlers/voice/VoiceChannelEffectSend';
 import {handleVoiceServerUpdate} from '@app/stores/gateway/handlers/voice/VoiceServerUpdate';
 import {handleVoiceStateUpdate} from '@app/stores/gateway/handlers/voice/VoiceStateUpdate';
 
@@ -157,6 +158,7 @@ export function createHandlerRegistry(): GatewayHandlerRegistry {
 
 	registry.set('VOICE_STATE_UPDATE', handleVoiceStateUpdate as GatewayEventHandler);
 	registry.set('VOICE_SERVER_UPDATE', handleVoiceServerUpdate as GatewayEventHandler);
+	registry.set('VOICE_CHANNEL_EFFECT_SEND', handleVoiceChannelEffectSend as GatewayEventHandler);
 
 	registry.set('CALL_CREATE', handleCallCreate as GatewayEventHandler);
 	registry.set('CALL_UPDATE', handleCallUpdate as GatewayEventHandler);

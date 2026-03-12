@@ -67,6 +67,16 @@ export async function update(
 	}
 }
 
+export async function send(guildId: string, soundId: string): Promise<void> {
+	try {
+		await http.post({url: Endpoints.GUILD_SOUNDBOARD_SOUND_SEND(guildId, soundId)});
+		logger.debug(`Sent soundboard sound ${soundId} in guild ${guildId}`);
+	} catch (error) {
+		logger.error(`Failed to send soundboard sound ${soundId} in guild ${guildId}:`, error);
+		throw error;
+	}
+}
+
 export async function remove(guildId: string, soundId: string): Promise<void> {
 	try {
 		await http.delete({url: Endpoints.GUILD_SOUNDBOARD_SOUND(guildId, soundId)});

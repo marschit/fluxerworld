@@ -133,6 +133,30 @@ export function GuildSoundboardController(app: HonoApp) {
 		},
 	);
 
+	app.post(
+		'/guilds/:guild_id/soundboard-sounds/:sound_id/send',
+		RateLimitMiddleware(RateLimitConfigs.GUILD_SOUNDBOARD_SOUND_SEND),
+		LoginRequired,
+		Validator('param', GuildIdSoundIdParam),
+		OpenAPI({
+			operationId: 'send_guild_soundboard_sound',
+			summary: 'Send a soundboard sound to voice channel',
+			responseSchema: null,
+			statusCode: 204,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: ['Guilds'],
+			description: 'Play a soundboard sound in the voice channel the user is connected to.',
+		}),
+		async (ctx) => {
+			const {guild_id, sound_id} = ctx.req.valid('param');
+			const userId = ctx.get('user').id;
+			const guildId = createGuildID(guild_id);
+			const soundId = createSoundboardSoundID(sound_id);
+			await ctx.get('guildService').sendSoundboardSound({userId, guildId, soundId});
+			return ctx.body(null, 204);
+		},
+	);
+
 	app.delete(
 		'/guilds/:guild_id/soundboard-sounds/:sound_id',
 		RateLimitMiddleware(RateLimitConfigs.GUILD_SOUNDBOARD_SOUND_DELETE),

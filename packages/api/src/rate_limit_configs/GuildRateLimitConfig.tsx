@@ -215,4 +215,9 @@ export const GuildRateLimitConfigs = {
 		bucket: 'guild:soundboard_sound:delete::guild_id',
 		config: {limit: 20, windowMs: ms('10 seconds')},
 	} as RouteRateLimitConfig,
+
+	GUILD_SOUNDBOARD_SOUND_SEND: {
+		bucket: 'guild:soundboard_sound:send::guild_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
 } as const;

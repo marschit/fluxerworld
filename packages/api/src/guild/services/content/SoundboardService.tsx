@@ -205,6 +205,36 @@ export class SoundboardService {
 		});
 	}
 
+	async sendSoundboardSound(params: {
+		userId: UserID;
+		guildId: GuildID;
+		soundId: SoundboardSoundID;
+	}): Promise<void> {
+		const {userId, guildId, soundId} = params;
+		await this.contentHelpers.getGuildData({userId, guildId});
+
+		const voiceState = await this.gatewayService.getVoiceState({guildId, userId});
+		if (!voiceState?.channel_id) {
+			throw new Error('User is not in a voice channel');
+		}
+
+		const allSounds = await this.guildRepository.listSoundboardSounds(guildId);
+		const sound = allSounds.find((s) => s.id === soundId);
+		if (!sound) throw new UnknownSoundboardSoundError();
+
+		await this.gatewayService.dispatchGuild({
+			guildId,
+			event: 'VOICE_CHANNEL_EFFECT_SEND',
+			data: {
+				guild_id: guildId,
+				channel_id: voiceState.channel_id,
+				user_id: userId,
+				sound_id: soundId,
+				sound_volume: sound.volume,
+			},
+		});
+	}
+
 	private processAudio(params: {errorPath: string; base64Audio: string}): Uint8Array {
 		const {errorPath, base64Audio} = params;
 

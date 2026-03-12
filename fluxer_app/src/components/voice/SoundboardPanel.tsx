@@ -92,8 +92,14 @@ export const SoundboardPanel = observer(function SoundboardPanel() {
 			});
 
 			void audio.play();
+
+			if (guildId) {
+				GuildSoundboardActionCreators.send(guildId, soundId).catch((err) => {
+					logger.error('Failed to broadcast sound to voice channel:', err);
+				});
+			}
 		},
-		[playingId],
+		[playingId, guildId],
 	);
 
 	const handleClose = useCallback(() => {

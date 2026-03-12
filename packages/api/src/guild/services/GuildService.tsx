@@ -821,6 +821,10 @@ export class GuildService {
 		await this.content.deleteSoundboardSound(params, auditLogReason);
 	}
 
+	async sendSoundboardSound(params: {userId: UserID; guildId: GuildID; soundId: SoundboardSoundID}) {
+		await this.content.sendSoundboardSound(params);
+	}
+
 	async getChannels(params: {
 		userId: UserID;
 		guildId: GuildID;

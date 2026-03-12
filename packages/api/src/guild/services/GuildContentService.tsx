@@ -251,4 +251,8 @@ export class GuildContentService {
 	): Promise<void> {
 		return this.soundboardService.deleteSoundboardSound(params, auditLogReason);
 	}
+
+	async sendSoundboardSound(params: {userId: UserID; guildId: GuildID; soundId: SoundboardSoundID}): Promise<void> {
+		return this.soundboardService.sendSoundboardSound(params);
+	}
 }
