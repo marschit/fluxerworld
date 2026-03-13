@@ -98,6 +98,7 @@ jobs:
     needs: sync
     if: needs.sync.outputs.has_changes == 'true' || inputs.force_build == true
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: macos-latest
@@ -109,7 +110,7 @@ jobs:
           - os: ubuntu-latest
             platform: linux-x64
             args: --linux AppImage deb tar.gz --x64
-          - os: ubuntu-latest
+          - os: windows-latest
             platform: win
             args: --win nsis --x64 --arm64 -c.npmRebuild=false
     runs-on: ${{ matrix.os }}
@@ -137,7 +138,7 @@ jobs:
         run: node scripts/build.mjs
 
       - name: Install Linux build deps
-        if: matrix.os == 'ubuntu-latest'
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y rpm
