@@ -77,13 +77,13 @@ async function buildMain() {
 		outfile: path.join(DIST_DIR, 'main', 'index.js'),
 		minify: isProduction,
 		sourcemap: true,
-		external: electronExternals,
+		external: [...electronExternals, 'node:module'],
 		plugins: [pathAliasPlugin],
 		define: {
 			'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
 		},
 		banner: {
-			js: `import { createRequire } from 'module'; const require = createRequire(import.meta.url);`,
+			js: `import { createRequire as _createRequire } from 'module'; const require = _createRequire(import.meta.url);`,
 		},
 	});
 

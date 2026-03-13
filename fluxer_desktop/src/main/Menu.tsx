@@ -22,8 +22,7 @@ import {getMainWindow} from '@electron/main/Window';
 import {app, Menu, type MenuItemConstructorOptions, shell} from 'electron';
 
 export function createApplicationMenu(): void {
-	const isCanary = BUILD_CHANNEL === 'canary';
-	const appName = isCanary ? 'Fluxer Canary' : 'Fluxer';
+	const appName = 'RedFlux';
 	const isMac = process.platform === 'darwin';
 
 	const template: Array<MenuItemConstructorOptions> = [];
@@ -183,20 +182,20 @@ export function createApplicationMenu(): void {
 			{
 				label: 'Website',
 				click: async () => {
-					await shell.openExternal('https://fluxer.app');
+					await shell.openExternal('https://flux.mamallow.net');
 				},
 			},
 			{
 				label: 'GitHub',
 				click: async () => {
-					await shell.openExternal('https://github.com/fluxerapp/fluxer');
+					await shell.openExternal('https://github.com/marschit/fluxerworld');
 				},
 			},
 			{type: 'separator'},
 			{
 				label: 'Report Issue',
 				click: async () => {
-					await shell.openExternal('https://github.com/fluxerapp/fluxer/issues');
+					await shell.openExternal('https://github.com/marschit/fluxerworld/issues');
 				},
 			},
 		],

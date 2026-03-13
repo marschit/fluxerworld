@@ -17,7 +17,6 @@
  * along with Fluxer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {createRequire} from 'node:module';
 import {BUILD_CHANNEL} from '@electron/common/BuildChannel';
 import {loadDesktopConfig} from '@electron/common/DesktopConfig';
 import {configureUserDataPath} from '@electron/common/UserDataPath';
@@ -41,8 +40,6 @@ import log from 'electron-log';
 log.transports.file.level = 'info';
 log.transports.console.level = 'debug';
 
-const requireModule = createRequire(import.meta.url);
-
 const userDataConfig = configureUserDataPath();
 log.info('Configured user data storage', {
 	channel: userDataConfig.channel,
@@ -55,7 +52,7 @@ loadDesktopConfig(userDataConfig.base);
 const isCanary = BUILD_CHANNEL === 'canary';
 
 if (process.platform === 'win32') {
-	const handledSquirrelEvent = requireModule('electron-squirrel-startup');
+	const handledSquirrelEvent = require('electron-squirrel-startup');
 	if (handledSquirrelEvent) {
 		app.quit();
 	}
@@ -68,13 +65,11 @@ if (process.platform === 'win32') {
 }
 
 if (process.platform === 'win32') {
-	const appId = isCanary ? 'app.fluxer.canary' : 'app.fluxer';
-	app.setAppUserModelId(appId);
+	app.setAppUserModelId('net.mamallow.redflux');
 }
 
 if (process.platform === 'linux') {
-	const linuxName = isCanary ? 'Fluxer Canary' : 'Fluxer';
-	app.setName(linuxName);
+	app.setName('RedFlux');
 	app.commandLine.appendSwitch('enable-features', 'WebRTCPipeWireCapturer');
 }
 
@@ -132,7 +127,8 @@ if (!gotTheLock) {
 		}
 
 		createWindow();
-		registerUpdater(getMainWindow);
+		// Auto-updater disabled for RedFlux (no update server)
+		// registerUpdater(getMainWindow);
 
 		app.on('activate', () => {
 			const mainWindow = getMainWindow();

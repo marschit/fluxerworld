@@ -17,9 +17,9 @@
  * along with Fluxer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-export const APP_PROTOCOL = 'fluxer';
-export const STABLE_APP_URL = 'https://web.fluxer.app';
-export const CANARY_APP_URL = 'https://web.canary.fluxer.app';
+export const APP_PROTOCOL = 'redflux';
+export const STABLE_APP_URL = 'https://flux.mamallow.net';
+export const CANARY_APP_URL = 'https://flux.mamallow.net';
 export const DEFAULT_WINDOW_WIDTH = 1280;
 export const DEFAULT_WINDOW_HEIGHT = 800;
 export const MIN_WINDOW_WIDTH = 800;
