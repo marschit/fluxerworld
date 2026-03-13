@@ -25,6 +25,7 @@ import AuthLoginPasskeyActions, {AuthLoginDivider} from '@app/components/auth/au
 import {useDesktopHandoffFlow} from '@app/components/auth/auth_login_core/useDesktopHandoffFlow';
 import DesktopHandoffAccountSelector from '@app/components/auth/DesktopHandoffAccountSelector';
 import {HandoffCodeDisplay} from '@app/components/auth/HandoffCodeDisplay';
+import {InstanceSelector, type InstanceDiscoveryStatus} from '@app/components/auth/InstanceSelector';
 import IpAuthorizationScreen from '@app/components/auth/IpAuthorizationScreen';
 import styles from '@app/components/pages/LoginPage.module.css';
 import {Button} from '@app/components/uikit/button/Button';
@@ -84,6 +85,10 @@ export const AuthLoginLayout = observer(function AuthLoginLayout({
 		hasStoredAccounts: hasHandoffAccounts,
 		initialMode: desktopHandoff && hasHandoffAccounts ? 'selecting' : 'login',
 	});
+
+	const [showInstanceSelector, setShowInstanceSelector] = useState(false);
+	const [instanceUrl, setInstanceUrl] = useState('');
+	const [instanceDiscoveryStatus, setInstanceDiscoveryStatus] = useState<InstanceDiscoveryStatus>('idle');
 
 	const [ipAuthChallenge, setIpAuthChallenge] = useState<IpAuthorizationChallenge | null>(null);
 	const [showAccountSelector, setShowAccountSelector] = useState(!desktopHandoff && hasStoredAccounts && !initialEmail);
@@ -273,6 +278,26 @@ export const AuthLoginLayout = observer(function AuthLoginLayout({
 			{showTitle ? <h1 className={styles.title}>{title ?? <Trans>Welcome back</Trans>}</h1> : null}
 
 			{!showAccountSelector && switchError ? <div className={styles.loginNotice}>{switchError}</div> : null}
+
+			<div className={styles.instanceSection}>
+				{showInstanceSelector ? (
+					<InstanceSelector
+						value={instanceUrl}
+						onChange={setInstanceUrl}
+						onDiscoveryStatusChange={setInstanceDiscoveryStatus}
+						disabled={isLoading}
+					/>
+				) : (
+					<button
+						type="button"
+						className={styles.instanceToggle}
+						onClick={() => setShowInstanceSelector(true)}
+						disabled={isLoading}
+					>
+						<Trans>Connect to a different instance</Trans>
+					</button>
+				)}
+			</div>
 
 			{ssoConfig?.enabled ? (
 				<div className={styles.ssoBlock}>
