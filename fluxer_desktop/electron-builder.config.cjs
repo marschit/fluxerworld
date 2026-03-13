@@ -130,6 +130,7 @@ module.exports = {
 	linux: {
 		icon: `build_resources/${iconDir}/icon.png`,
 		category: 'Network;InstantMessaging;',
+		files: ['!**/node_modules/node-mac-permissions/**'],
 		target: [
 			{
 				target: 'AppImage',
