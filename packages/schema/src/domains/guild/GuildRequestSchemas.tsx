@@ -246,8 +246,8 @@ export type GuildStickerBulkCreateRequest = z.infer<typeof GuildStickerBulkCreat
 export const GuildSoundboardSoundCreateRequest = z.object({
 	name: createStringType(2, 32)
 		.refine(
-			(value) => /^[a-zA-Z0-9_ ]+$/.test(value),
-			'Sound name can only contain letters, numbers, spaces, and underscores',
+			(value) => /^[\p{L}\p{N}\p{Emoji_Presentation}\p{Emoji}\uFE0F_ ]+$/u.test(value),
+			'Sound name can only contain letters, numbers, emojis, spaces, and underscores',
 		)
 		.describe('The name of the sound (2-32 characters)'),
 	sound: createBase64StringType(1, Math.ceil(SOUNDBOARD_SOUND_MAX_SIZE * (4 / 3))).describe(
@@ -263,8 +263,8 @@ export type GuildSoundboardSoundCreateRequest = z.infer<typeof GuildSoundboardSo
 export const GuildSoundboardSoundUpdateRequest = z.object({
 	name: createStringType(2, 32)
 		.refine(
-			(value) => /^[a-zA-Z0-9_ ]+$/.test(value),
-			'Sound name can only contain letters, numbers, spaces, and underscores',
+			(value) => /^[\p{L}\p{N}\p{Emoji_Presentation}\p{Emoji}\uFE0F_ ]+$/u.test(value),
+			'Sound name can only contain letters, numbers, emojis, spaces, and underscores',
 		)
 		.optional()
 		.describe('The name of the sound (2-32 characters)'),

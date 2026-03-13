@@ -44,7 +44,7 @@ function sanitizeSoundName(fileName: string): string {
 		fileName
 			.split('.')
 			.shift()
-			?.replace(/[^a-zA-Z0-9_ ]/g, '') ?? '';
+			?.replace(/[^\p{L}\p{N}\p{Emoji_Presentation}\p{Emoji}\uFE0F_ ]/gu, '') ?? '';
 	return name.padEnd(2, '_').slice(0, 32);
 }
 
