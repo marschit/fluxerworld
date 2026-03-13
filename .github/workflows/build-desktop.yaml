@@ -76,7 +76,7 @@ env:
 jobs:
   meta:
     name: Resolve build metadata
-    runs-on: blacksmith-8vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     outputs:
       version: ${{ steps.meta.outputs.version }}
@@ -100,7 +100,7 @@ jobs:
 
   matrix:
     name: Resolve build matrix
-    runs-on: blacksmith-8vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -361,7 +361,7 @@ jobs:
     needs:
       - meta
       - build
-    runs-on: blacksmith-8vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
       CHANNEL: ${{ needs.meta.outputs.build_channel }}
