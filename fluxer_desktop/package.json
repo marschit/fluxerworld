@@ -2,6 +2,8 @@
 	"name": "fluxer_desktop",
 	"version": "0.0.0",
 	"private": true,
+	"author": "Malte Marschall <malte@mamallow.net>",
+	"homepage": "https://flux.mamallow.net",
 	"type": "module",
 	"main": "dist/main/index.js",
 	"scripts": {
