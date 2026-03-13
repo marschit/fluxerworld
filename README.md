@@ -1,100 +1,57 @@
-# Fluxer World
+# RedFlux
 
-**Fluxer World** is an independent public community instance powered by the open-source Fluxer platform.
+**RedFlux** ist ein Hobby-Fork der Open-Source-Plattform [Fluxer](https://github.com/fluxerapp/fluxer) zum Self-Hosting.
 
-🌐 Website: [fluxer.world](https://fluxer.world)  
-💬 Join the instance: [Join Fluxer World](https://fluxer.world)  
-📦 GitHub Organization: [fluxerworld](https://github.com/fluxerworld)
+Wir betreiben eine eigene Instanz und haben dafür eigene Desktop-Clients sowie zusätzliche Features entwickelt.
 
-> ⚠️ **Disclaimer:**  
-> Fluxer World is **not the official Fluxer platform** and is **not affiliated with the Fluxer project**.  
-> This is a community-run instance built using the open source Fluxer software.
+> **Disclaimer:**
+> RedFlux ist **kein offizielles Fluxer-Projekt** und steht in keiner Verbindung zum Fluxer-Team.
+> Es handelt sich um ein Hobby-Projekt — Nutzung auf eigene Gefahr, keine Gewähr.
 
 ---
 
-# What is Fluxer World?
+## Features
 
-Fluxer World exists to provide a stable public Fluxer instance with **polished clients and reliable infrastructure**.
+Zusätzlich zum Upstream-Fluxer bietet RedFlux:
 
-Our goal is to make Fluxer easy to use by providing:
-
-- Stable desktop clients
-- Android and iOS mobile apps
-- Linux builds for multiple distributions
-- A clean and simple web interface
+- **Guild Soundboard** — Sounds hochladen, verwalten und in Voice-Channels abspielen
+- **RedFlux Desktop-Clients** — Eigene Builds für macOS, Linux und Windows
+- **Instance Selector** — Einfach eigene Server-Instanzen verbinden
+- **Automatische Upstream-Syncs** — Neue Fluxer-Updates werden täglich integriert
 
 ---
 
-# Clients
+## Downloads
 
-Fluxer World provides clients for multiple platforms:
+Desktop-Clients für alle Plattformen gibt es unter [Releases](https://github.com/marschit/redflux/releases).
 
-- Windows  
-- macOS  
-- Linux (tar.gz and Flatpak)  
-- Android  
-- iOS
-
-Downloads are available on the website:
-
-➡️ **[Download Clients](https://fluxer.world)**
+| Plattform | Formate |
+|-----------|---------|
+| **macOS** | `.dmg` (arm64) |
+| **Linux** | `.AppImage`, `.deb`, `.tar.gz` (x64 + arm64) |
+| **Windows** | `.exe` (x64 + arm64) |
 
 ---
 
-# Self Hosting Fluxer
+## Self-Hosting
 
-Fluxer is fully open source and can be self hosted.
-
-If you would like to run your own server, see the official documentation:
-
-📘 **[Fluxer Self-Hosting Guide](https://fluxer.world/selfhost.html)**
-
-Fluxer World will also provide additional guides to make deploying a server easier.
+RedFlux basiert auf Fluxer und kann selbst gehostet werden. Siehe die offizielle [Fluxer Self-Hosting Anleitung](https://docs.fluxer.app).
 
 ---
 
-# Contributing
+## Mitmachen
 
-Contributions are welcome.
+Beiträge sind willkommen! Du kannst helfen durch:
 
-You can help by:
+- Bugs melden
+- Features vorschlagen
+- Clients testen
+- Code beitragen
 
-- Reporting bugs  
-- Suggesting features  
-- Testing clients  
-- Improving documentation  
-- Contributing code  
-
-➡️ **[Contribute on GitHub](https://github.com/fluxerworld)**
+Erstell einfach ein [Issue](https://github.com/marschit/redflux/issues) oder einen Pull Request.
 
 ---
 
-# Donations
+## Lizenz
 
-Running a public instance requires servers, storage, and bandwidth.
-
-If you would like to support Fluxer World you can donate here:
-
-💖 **[Donate via PayPal](https://paypal.me/fluxerworld)**
-
-All donations go toward server and infrastructure costs.
-
----
-
-# Roadmap
-
-Planned improvements include:
-
-- Improved client polish
-- Better search functionality
-- Fixing DM and role issues
-- Expanded mobile support
-- Additional Linux packaging (Flatpak, tar.gz, Arch PKGBUILD)
-
----
-
-# License
-
-Fluxer World runs on the open-source Fluxer platform.
-
-Please refer to the upstream Fluxer project for licensing details.
+RedFlux basiert auf dem Open-Source-Projekt Fluxer (AGPL-3.0). Siehe [LICENSE](LICENSE) für Details.
