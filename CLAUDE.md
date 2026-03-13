@@ -1,6 +1,6 @@
 # Fluxerworld (RedFlux)
 
-Self-hosted Fluxer fork. Repo: `fluxerworld/redflux`, Branch: `feature/guild-soundboard`
+Self-hosted Fluxer fork. Repo: `marschit/redflux`, Branch: `feature/guild-soundboard`
 
 ## Server
 - SSH: `root@65.108.56.146` (key auth)

@@ -188,14 +188,14 @@ export function createApplicationMenu(): void {
 			{
 				label: 'GitHub',
 				click: async () => {
-					await shell.openExternal('https://github.com/fluxerworld/redflux');
+					await shell.openExternal('https://github.com/marschit/redflux');
 				},
 			},
 			{type: 'separator'},
 			{
 				label: 'Report Issue',
 				click: async () => {
-					await shell.openExternal('https://github.com/fluxerworld/redflux/issues');
+					await shell.openExternal('https://github.com/marschit/redflux/issues');
 				},
 			},
 		],
