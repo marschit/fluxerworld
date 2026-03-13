@@ -52,6 +52,9 @@ module.exports = {
 	],
 
 	asar: true,
+	asarUnpack: [
+		'**/node_modules/uiohook-napi/**',
+	],
 	compression: 'maximum',
 
 	mac: {
