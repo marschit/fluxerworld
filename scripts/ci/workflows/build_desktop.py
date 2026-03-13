@@ -206,7 +206,10 @@ Set-Content -Path $scriptPath -Value $lines -Encoding utf8
 python $scriptPath
 """
     ),
-    "build_app_linux": "pnpm exec electron-builder --config electron-builder.config.cjs --linux --${ELECTRON_ARCH}\n",
+    "build_app_linux": """set -euo pipefail
+find node_modules -path '*/node-mac-permissions/binding.gyp' -delete 2>/dev/null || true
+pnpm exec electron-builder --config electron-builder.config.cjs --linux --${ELECTRON_ARCH}
+""",
     "prepare_artifacts_windows": pwsh_step(
         r"""
 New-Item -ItemType Directory -Force upload_staging | Out-Null
