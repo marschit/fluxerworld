@@ -174,15 +174,18 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: build-${{ github.run_number }}
-          name: RedFlux Build ${{ github.run_number }}
+          tag_name: redflux-${{ github.run_number }}
+          name: RedFlux Desktop ${{ github.run_number }}
           body: |
-            Automated RedFlux build (synced with upstream fluxerapp/fluxer).
+            RedFlux Desktop Client — custom build for flux.mamallow.net
+            (synced with upstream fluxerapp/fluxer)
 
             ## Downloads
-            - **macOS**: `.dmg` (arm64)
-            - **Linux**: `.AppImage`, `.deb`, `.tar.gz` (x64 + arm64)
-            - **Windows**: `.exe` (x64 + arm64)
+            | Platform | x64 | arm64 |
+            |----------|-----|-------|
+            | **macOS** | — | `.dmg` |
+            | **Linux** | `.AppImage` `.deb` `.tar.gz` | `.AppImage` `.deb` `.tar.gz` |
+            | **Windows** | `.exe` | `.exe` |
           files: artifacts/**/*
           draft: false
           prerelease: false
