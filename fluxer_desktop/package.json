@@ -16,7 +16,6 @@
 		"@simplewebauthn/browser": "13.2.2",
 		"electron-squirrel-startup": "1.0.1",
 		"electron-webauthn-mac": "1.0.0",
-		"node-mac-permissions": "2.5.0",
 		"update-electron-app": "3.1.2",
 		"ws": "8.19.0"
 	},
@@ -30,6 +29,7 @@
 	},
 	"optionalDependencies": {
 		"electron-log": "5.4.3",
+		"node-mac-permissions": "2.5.0",
 		"uiohook-napi": "1.5.4"
 	}
 }
