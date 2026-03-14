@@ -42,7 +42,19 @@ import type {
 	PublicKeyCredentialDescriptor,
 	PublicKeyCredentialRequestOptions,
 } from '@electron-webauthn/native';
-import {create as nativeCreate, get as nativeGet, isSupported as nativeIsSupported} from '@electron-webauthn/native';
+
+let nativeCreate: typeof import('@electron-webauthn/native').create | undefined;
+let nativeGet: typeof import('@electron-webauthn/native').get | undefined;
+let nativeIsSupported: typeof import('@electron-webauthn/native').isSupported | undefined;
+
+try {
+	const nativeModule = require('@electron-webauthn/native');
+	nativeCreate = nativeModule.create;
+	nativeGet = nativeModule.get;
+	nativeIsSupported = nativeModule.isSupported;
+} catch {
+	// Platform-specific binary not available (e.g. linux-arm64-gnu)
+}
 import type {
 	AuthenticationExtensionsClientOutputs,
 	AuthenticationResponseJSON,
@@ -393,13 +405,15 @@ function createPasskeyProvider(): PasskeyProvider {
 
 function createNativePasskeyProvider(): PasskeyProvider {
 	return {
-		isSupported: nativeIsSupported,
+		isSupported: nativeIsSupported ?? (() => false),
 		authenticate: async (options) => {
+			if (!nativeGet) throw new Error('WebAuthn native module not available on this platform');
 			const requestOptions = convertRequestOptions(options);
 			const credential = await nativeGet(requestOptions);
 			return buildAuthenticationResponse(credential);
 		},
 		register: async (options) => {
+			if (!nativeCreate) throw new Error('WebAuthn native module not available on this platform');
 			const creationOptions = convertCreationOptions(options);
 			const credential = await nativeCreate(creationOptions);
 			return buildRegistrationResponse(credential);
