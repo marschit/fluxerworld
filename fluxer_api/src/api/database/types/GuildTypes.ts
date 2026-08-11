@@ -9,6 +9,7 @@ import type {
 	GuildID,
 	InviteCode,
 	RoleID,
+	SoundboardSoundID,
 	StickerID,
 	UserID,
 	VanityURLCode,
@@ -295,6 +296,38 @@ export const GUILD_STICKER_BY_STICKER_ID_COLUMNS = [
 	'tags',
 	'creator_id',
 ] as const satisfies ReadonlyArray<keyof GuildStickerRow>;
+
+export interface GuildSoundboardSoundRow {
+	guild_id: GuildID;
+	sound_id: SoundboardSoundID;
+	name: string;
+	creator_id: UserID;
+	volume: number;
+	emoji_id: Nullish<EmojiID>;
+	emoji_name: Nullish<string>;
+	version: number;
+}
+
+export const GUILD_SOUNDBOARD_SOUND_COLUMNS = [
+	'guild_id',
+	'sound_id',
+	'name',
+	'creator_id',
+	'volume',
+	'emoji_id',
+	'emoji_name',
+	'version',
+] as const satisfies ReadonlyArray<keyof GuildSoundboardSoundRow>;
+
+export const GUILD_SOUNDBOARD_SOUND_BY_SOUND_ID_COLUMNS = [
+	'guild_id',
+	'sound_id',
+	'name',
+	'creator_id',
+	'volume',
+	'emoji_id',
+	'emoji_name',
+] as const satisfies ReadonlyArray<keyof GuildSoundboardSoundRow>;
 
 export interface GuildMembershipMetadataRow {
 	guild_id: GuildID;

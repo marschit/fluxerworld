@@ -8,6 +8,9 @@ import {SoundType} from '@app/features/notification/utils/SoundUtils';
 import Permission from '@app/features/permissions/state/Permission';
 import NativePermission from '@app/features/permissions/system/state/NativePermission';
 import {Logger} from '@app/features/platform/utils/AppLogger';
+import {ComponentDispatch} from '@app/features/platform/utils/ComponentBus';
+import {SoundboardPanel} from '@app/features/soundboard/components/SoundboardPanel';
+import Soundboard from '@app/features/soundboard/state/Soundboard';
 import {MenuGroup} from '@app/features/ui/action_menu/MenuGroup';
 import {MenuItem} from '@app/features/ui/action_menu/MenuItem';
 import * as ContextMenuCommands from '@app/features/ui/commands/ContextMenuCommands';
@@ -95,6 +98,7 @@ import {
 	MicrophoneIcon,
 	MicrophoneSlashIcon,
 	MonitorPlayIcon,
+	MusicNoteIcon,
 	PhoneXIcon,
 	SpeakerHighIcon,
 	SpeakerSlashIcon,
@@ -108,6 +112,14 @@ import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 const CHANGE_SOURCE_DESCRIPTOR = msg({
 	message: 'Change source',
 	comment: 'Voice control menu action to choose a different screen-share source.',
+});
+const SOUNDBOARD_DESCRIPTOR = msg({
+	message: 'Soundboard',
+	comment: 'Voice control bar button that opens the guild soundboard panel.',
+});
+const CLOSE_SOUNDBOARD_DESCRIPTOR = msg({
+	message: 'Close Soundboard',
+	comment: 'Voice control bar button label while the guild soundboard panel is open.',
 });
 const END_SCREEN_SHARE_DESCRIPTOR = msg({
 	message: 'End screen share',
@@ -241,6 +253,14 @@ const VoiceControlBarInner = observer(function VoiceControlBarInner() {
 	const [audioSettingsOpen, setAudioSettingsOpen] = useState(false);
 	const [cameraSettingsOpen, setCameraSettingsOpen] = useState(false);
 	const [moreOptionsOpen, setMoreOptionsOpen] = useState(false);
+
+	useEffect(() => {
+		return ComponentDispatch.subscribe('SOUNDBOARD_TOGGLE', () => {
+			if (MediaEngine.guildId) {
+				Soundboard.togglePanel();
+			}
+		});
+	}, []);
 	const isMuted = localSelfMute;
 	const isDeafened = localSelfDeaf;
 	const isGuildMuted = voiceState?.mute ?? false;
@@ -921,6 +941,34 @@ const VoiceControlBarInner = observer(function VoiceControlBarInner() {
 					</FocusRing>
 				</Tooltip>
 			</div>
+			{guildId && (
+				<Tooltip
+					text={() => (
+						<TooltipWithKeybind
+							label={i18n._(Soundboard.panelOpen ? CLOSE_SOUNDBOARD_DESCRIPTOR : SOUNDBOARD_DESCRIPTOR)}
+							action="voice_toggle_soundboard"
+						/>
+					)}
+					data-flx="voice.voice-control-bar.voice-control-bar-inner.tooltip-soundboard"
+				>
+					<FocusRing offset={-2} data-flx="voice.voice-control-bar.voice-control-bar-inner.focus-ring-soundboard">
+						<button
+							type="button"
+							className={styles.button}
+							onClick={() => Soundboard.togglePanel()}
+							aria-label={i18n._(Soundboard.panelOpen ? CLOSE_SOUNDBOARD_DESCRIPTOR : SOUNDBOARD_DESCRIPTOR)}
+							aria-pressed={Soundboard.panelOpen}
+							data-flx="voice.voice-control-bar.voice-control-bar-inner.button.soundboard-toggle"
+						>
+							<MusicNoteIcon
+								weight="fill"
+								className={styles.icon}
+								data-flx="voice.voice-control-bar.voice-control-bar-inner.icon-soundboard"
+							/>
+						</button>
+					</FocusRing>
+				</Tooltip>
+			)}
 			<Tooltip
 				text={i18n._(MORE_OPTIONS_DESCRIPTOR)}
 				data-flx="voice.voice-control-bar.voice-control-bar-inner.tooltip--7"
@@ -1005,6 +1053,7 @@ const VoiceControlBarInner = observer(function VoiceControlBarInner() {
 					/>
 				</>
 			)}
+			{Soundboard.panelOpen && guildId && <SoundboardPanel />}
 		</div>
 	);
 });

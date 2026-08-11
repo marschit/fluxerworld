@@ -55,6 +55,8 @@ import {handlePresenceUpdateBulk} from '@app/features/presence/events/PresenceUp
 import {handleRelationshipAdd} from '@app/features/relationship/events/RelationshipAdd';
 import {handleRelationshipRemove} from '@app/features/relationship/events/RelationshipRemove';
 import {handleRelationshipUpdate} from '@app/features/relationship/events/RelationshipUpdate';
+import {handleGuildSoundboardSoundsUpdate} from '@app/features/soundboard/events/GuildSoundboardSoundsUpdate';
+import {handleVoiceChannelEffectSend} from '@app/features/soundboard/events/VoiceChannelEffectSend';
 import {handleAuthSessionChange} from '@app/features/user/events/AuthSessionChange';
 import {handleUserConnectionsUpdate} from '@app/features/user/events/UserConnectionsUpdate';
 import {handleUserGuildSettingsUpdate} from '@app/features/user/events/UserGuildSettingsUpdate';
@@ -108,6 +110,8 @@ export function createHandlerRegistry(): GatewayHandlerRegistry {
 	registry.set('GUILD_BAN_REMOVE', handleGuildBanRemove as GatewayEventHandler);
 	registry.set('GUILD_EMOJIS_UPDATE', handleGuildEmojisUpdate as GatewayEventHandler);
 	registry.set('GUILD_STICKERS_UPDATE', handleGuildStickersUpdate as GatewayEventHandler);
+	registry.set('GUILD_SOUNDBOARD_SOUNDS_UPDATE', handleGuildSoundboardSoundsUpdate as GatewayEventHandler);
+	registry.set('VOICE_CHANNEL_EFFECT_SEND', handleVoiceChannelEffectSend as GatewayEventHandler);
 	registry.set('GUILD_SYNC', handleGuildSync as GatewayEventHandler);
 	registry.set('GUILD_MEMBER_ADD', handleGuildMemberAdd as GatewayEventHandler);
 	registry.set('GUILD_MEMBER_UPDATE', handleGuildMemberUpdate as GatewayEventHandler);

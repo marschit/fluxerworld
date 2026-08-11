@@ -16,6 +16,7 @@ interface RequireClientIpOptions {
 
 const defaultExemptPaths: Array<string> = [
 	'/_health',
+	'/.well-known/fluxer',
 	'/webhooks/livekit',
 	'/test',
 	'/connections/bluesky/client-metadata.json',

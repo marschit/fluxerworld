@@ -12,6 +12,7 @@ import {
 	EMOJI_MAX_SIZE,
 	MAX_TEMP_BAN_DURATION_SECONDS,
 	MIN_TEMP_BAN_DURATION_SECONDS,
+	SOUNDBOARD_SOUND_MAX_SIZE,
 	STICKER_MAX_SIZE,
 } from '@fluxer/constants/src/LimitConstants';
 import {SudoVerificationSchema} from '@fluxer/schema/src/domains/auth/AuthSchemas';
@@ -277,6 +278,46 @@ export const GuildStickerCloneRequest = z.object({
 });
 
 export type GuildStickerCloneRequest = z.infer<typeof GuildStickerCloneRequest>;
+
+export const GuildSoundboardSoundCreateRequest = z.object({
+	name: createStringType(2, 32)
+		.refine(
+			// biome-ignore lint/suspicious/noMisleadingCharacterClass: the emoji variation selector is deliberately allowed in sound names
+			(value) => /^[\p{L}\p{N}\p{Emoji_Presentation}\p{Emoji}\uFE0F_ ]+$/u.test(value),
+			'Sound name can only contain letters, numbers, emojis, spaces, and underscores',
+		)
+		.describe('The name of the sound (2-32 characters)'),
+	sound: createBase64StringType(1, Math.ceil(SOUNDBOARD_SOUND_MAX_SIZE * (4 / 3))).describe(
+		'Base64-encoded audio data for the sound',
+	),
+	volume: z.number().min(0).max(1).default(1).describe('The default volume of the sound (0-1)'),
+	emoji_id: SnowflakeType.nullish().describe('The emoji ID to associate with the sound'),
+	emoji_name: createStringType(1, 64).nullish().describe('The emoji name to associate with the sound'),
+});
+
+export type GuildSoundboardSoundCreateRequest = z.infer<typeof GuildSoundboardSoundCreateRequest>;
+
+export const GuildSoundboardSoundUpdateRequest = z.object({
+	name: createStringType(2, 32)
+		.refine(
+			// biome-ignore lint/suspicious/noMisleadingCharacterClass: the emoji variation selector is deliberately allowed in sound names
+			(value) => /^[\p{L}\p{N}\p{Emoji_Presentation}\p{Emoji}\uFE0F_ ]+$/u.test(value),
+			'Sound name can only contain letters, numbers, emojis, spaces, and underscores',
+		)
+		.optional()
+		.describe('The name of the sound (2-32 characters)'),
+	volume: z.number().min(0).max(1).optional().describe('The default volume of the sound (0-1)'),
+	emoji_id: SnowflakeType.nullish().describe('The emoji ID to associate with the sound'),
+	emoji_name: createStringType(1, 64).nullish().describe('The emoji name to associate with the sound'),
+});
+
+export type GuildSoundboardSoundUpdateRequest = z.infer<typeof GuildSoundboardSoundUpdateRequest>;
+
+export const GuildSoundboardSoundSendRequest = z.object({
+	channel_id: z.string().describe('The voice channel ID to send the sound to'),
+});
+
+export type GuildSoundboardSoundSendRequest = z.infer<typeof GuildSoundboardSoundSendRequest>;
 
 export const GuildTransferOwnershipRequest = z.object({
 	new_owner_id: SnowflakeType.describe('The ID of the user to transfer ownership to'),

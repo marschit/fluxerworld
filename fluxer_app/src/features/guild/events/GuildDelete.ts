@@ -20,6 +20,7 @@ import MentionFeed from '@app/features/notification/state/MentionFeed';
 import Permission from '@app/features/permissions/state/Permission';
 import Presence from '@app/features/presence/state/Presence';
 import QuickSwitcher from '@app/features/search/state/QuickSwitcher';
+import Soundboard from '@app/features/soundboard/state/Soundboard';
 import MediaEngine from '@app/features/voice/engine/MediaEngineFacade';
 import Webhooks from '@app/features/webhook/state/Webhooks';
 import type {Guild} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
@@ -41,6 +42,7 @@ export function handleGuildDelete(data: GuildDeletePayload, _context: GatewayHan
 	GuildVerification.handleGuildDelete(data.id);
 	Channels.handleGuildDelete({guildId: data.id});
 	Sticker.handleGuildDelete(data.id);
+	Soundboard.handleGuildDelete(data.id);
 	Emoji.handleGuildDelete({guildId: data.id});
 	Permission.handleGuild();
 	Invites.handleGuildDelete(data.id);

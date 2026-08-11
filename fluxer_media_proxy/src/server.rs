@@ -814,6 +814,9 @@ async fn catch_all(
     if let Some(key) = parse_entrance_sound_path(&path) {
         return serve_stored_raw(&app, method, &app.cfg.bucket_cdn, &key, request.headers()).await;
     }
+    if let Some(key) = parse_soundboard_sound_path(&path) {
+        return serve_stored_raw(&app, method, &app.cfg.bucket_cdn, &key, request.headers()).await;
+    }
     if let Some(asset) = parse_guild_member_asset_path(&path) {
         return serve_asset_image(&app, method, asset, &params, request.headers()).await;
     }
@@ -926,6 +929,21 @@ fn parse_simple_asset_path(path: &str, kind: AssetKind) -> Option<ParsedAssetPat
         kind,
         forced_output_format: (kind == AssetKind::Sticker).then_some(AssetExtension::Webp),
     })
+}
+
+fn parse_soundboard_sound_path(path: &str) -> Option<String> {
+    let mut parts = path.trim_start_matches('/').split('/');
+    if parts.next()? != "soundboard_sounds" {
+        return None;
+    }
+    let sound_id = parts.next()?;
+    if parts.next().is_some() {
+        return None;
+    }
+    if sound_id.is_empty() || !sound_id.bytes().all(|b| b.is_ascii_digit()) {
+        return None;
+    }
+    Some(format!("soundboard_sounds/{sound_id}"))
 }
 
 fn parse_entrance_sound_path(path: &str) -> Option<String> {
