@@ -95,6 +95,7 @@ guild_event_map() ->
         <<"GUILD_ROLE_DELETE">> => guild_role_delete,
         <<"GUILD_ROLE_UPDATE">> => guild_role_update,
         <<"GUILD_ROLE_UPDATE_BULK">> => guild_role_update_bulk,
+        <<"GUILD_SOUNDBOARD_SOUNDS_UPDATE">> => guild_soundboard_sounds_update,
         <<"GUILD_STICKERS_UPDATE">> => guild_stickers_update,
         <<"GUILD_UPDATE">> => guild_update
     }.
@@ -123,6 +124,7 @@ user_voice_event_map() ->
         <<"USER_PINNED_DMS_UPDATE">> => user_pinned_dms_update,
         <<"USER_SETTINGS_UPDATE">> => user_settings_update,
         <<"USER_UPDATE">> => user_update,
+        <<"VOICE_CHANNEL_EFFECT_SEND">> => voice_channel_effect_send,
         <<"VOICE_SERVER_UPDATE">> => voice_server_update,
         <<"VOICE_STATE_UPDATE">> => voice_state_update,
         <<"WEBAUTHN_CREDENTIALS_UPDATE">> => webauthn_credentials_update
