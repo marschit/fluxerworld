@@ -107,6 +107,21 @@ pub(in crate::server) fn parse_simple_asset_path(
     })
 }
 
+pub(in crate::server) fn parse_soundboard_sound_path(path: &str) -> Option<String> {
+    let mut parts = canonical_public_path(path)?.split('/');
+    if parts.next()? != "soundboard_sounds" {
+        return None;
+    }
+    let sound_id = parts.next()?;
+    if parts.next().is_some() {
+        return None;
+    }
+    if sound_id.is_empty() || !sound_id.bytes().all(|b| b.is_ascii_digit()) {
+        return None;
+    }
+    Some(format!("soundboard_sounds/{sound_id}"))
+}
+
 pub(in crate::server) fn parse_entrance_sound_path(path: &str) -> Option<String> {
     let mut parts = canonical_public_path(path)?.split('/');
     if parts.next()? != "entrance-sounds" {

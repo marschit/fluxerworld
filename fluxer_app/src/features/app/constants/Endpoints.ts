@@ -99,6 +99,10 @@ export const Endpoints = {
 	GUILD_EMOJI: (guildId: string, emojiId: string) => `/guilds/${guildId}/emojis/${emojiId}`,
 	GUILD_EMOJIS: (guildId: string) => `/guilds/${guildId}/emojis`,
 	GUILD_EMOJIS_CLONE: (guildId: string) => `/guilds/${guildId}/emojis/clone`,
+	GUILD_SOUNDBOARD_SOUND: (guildId: string, soundId: string) => `/guilds/${guildId}/soundboard-sounds/${soundId}`,
+	GUILD_SOUNDBOARD_SOUND_SEND: (guildId: string, soundId: string) =>
+		`/guilds/${guildId}/soundboard-sounds/${soundId}/send`,
+	GUILD_SOUNDBOARD_SOUNDS: (guildId: string) => `/guilds/${guildId}/soundboard-sounds`,
 	GUILD_STICKER: (guildId: string, stickerId: string) => `/guilds/${guildId}/stickers/${stickerId}`,
 	GUILD_STICKERS: (guildId: string) => `/guilds/${guildId}/stickers`,
 	GUILD_STICKERS_CLONE: (guildId: string) => `/guilds/${guildId}/stickers/clone`,

@@ -21,7 +21,7 @@ import type {UserPartialResponse} from '@fluxer/schema/src/domains/user/UserResp
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 import type {IpInfoService} from '@pkgs/geoip/src/IpInfoService';
 import type {ApiContext} from '../../ApiContext';
-import type {EmojiID, GuildID, RoleID, StickerID, UserID} from '../../BrandedTypes';
+import type {EmojiID, GuildID, RoleID, SoundboardSoundID, StickerID, UserID} from '../../BrandedTypes';
 import {createUserID, createWebhookID} from '../../BrandedTypes';
 import type {IChannelRepository} from '../../channel/IChannelRepository';
 import type {ChannelService} from '../../channel/services/ChannelService';
@@ -34,6 +34,7 @@ import type {InviteRepository} from '../../invite/InviteRepository';
 import type {LimitConfigService} from '../../limits/LimitConfigService';
 import type {RequestCache} from '../../middleware/RequestCacheMiddleware';
 import type {GuildAuditLog} from '../../models/GuildAuditLog';
+import type {User} from '../../models/User';
 import type {Webhook} from '../../models/Webhook';
 import type {IUserRepository} from '../../user/IUserRepository';
 import {getCachedUserPartialResponses} from '../../user/UserCacheHelpers';
@@ -266,6 +267,51 @@ export class GuildService {
 			await new Promise((resolve) => setTimeout(resolve, GUILD_UPDATE_LOCK_RETRY_DELAY_MS));
 		}
 		return null;
+	}
+
+	async getSoundboardSounds(params: {userId: UserID; guildId: GuildID; requestCache: RequestCache}) {
+		return this.content.getSoundboardSounds(params);
+	}
+
+	async createSoundboardSound(
+		params: {
+			user: User;
+			guildId: GuildID;
+			name: string;
+			sound: string;
+			volume?: number;
+			emojiId?: bigint | null;
+			emojiName?: string | null;
+		},
+		auditLogReason?: string | null,
+	) {
+		return this.content.createSoundboardSound(params, auditLogReason);
+	}
+
+	async updateSoundboardSound(
+		params: {
+			userId: UserID;
+			guildId: GuildID;
+			soundId: SoundboardSoundID;
+			name?: string;
+			volume?: number;
+			emojiId?: bigint | null;
+			emojiName?: string | null;
+		},
+		auditLogReason?: string | null,
+	) {
+		return this.content.updateSoundboardSound(params, auditLogReason);
+	}
+
+	async deleteSoundboardSound(
+		params: {userId: UserID; guildId: GuildID; soundId: SoundboardSoundID},
+		auditLogReason?: string | null,
+	) {
+		await this.content.deleteSoundboardSound(params, auditLogReason);
+	}
+
+	async sendSoundboardSound(params: {userId: UserID; guildId: GuildID; soundId: SoundboardSoundID; channelId: string}) {
+		await this.content.sendSoundboardSound(params);
 	}
 
 	async getEmojiMetadata(emojiId: EmojiID): Promise<GuildEmojiMetadataResponse> {

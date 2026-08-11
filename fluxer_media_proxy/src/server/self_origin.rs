@@ -7,7 +7,7 @@ use crate::{
     server::{
         asset_path::{
             decode_storage_key, parse_entrance_sound_path, parse_guild_member_asset_path,
-            parse_simple_asset_path, parse_standard_asset_path,
+            parse_simple_asset_path, parse_soundboard_sound_path, parse_standard_asset_path,
         },
         state::AppState,
     },
@@ -51,6 +51,9 @@ pub(in crate::server) fn resolve(app: &AppState, url: &str) -> Option<SelfOrigin
         return stored(cdn, decode_storage_key(path).ok()?);
     }
     if let Some(key) = parse_entrance_sound_path(path) {
+        return stored(cdn, key);
+    }
+    if let Some(key) = parse_soundboard_sound_path(path) {
         return stored(cdn, key);
     }
     let asset = parse_guild_member_asset_path(path)
