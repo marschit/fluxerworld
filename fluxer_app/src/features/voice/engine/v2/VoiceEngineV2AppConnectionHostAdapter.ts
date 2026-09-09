@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import assert from 'node:assert/strict';
+import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import {isElectronPlatform} from '@app/features/platform/types/Platform';
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import {Store} from '@app/features/voice/engine/Store';
@@ -188,7 +189,11 @@ function createRoomConnectOptions(): RoomConnectOptions {
 		autoSubscribe: false,
 	};
 	assert.equal(connectOptions.autoSubscribe, false, 'LiveKit connect options must not auto-subscribe');
-	if (isElectronPlatform()) {
+	// RedFlux: the hosted service forces relay-only ICE for desktop clients (IP privacy via
+	// its TURN fleet). Self-hosted instances usually run LiveKit without TURN, where a
+	// relay-only policy yields zero ICE candidates and voice never connects, so only
+	// enforce it when talking to a non-self-hosted instance.
+	if (isElectronPlatform() && !RuntimeConfig.isSelfHosted()) {
 		connectOptions.rtcConfig = {iceTransportPolicy: 'relay'};
 		assert.equal(
 			connectOptions.rtcConfig.iceTransportPolicy,
