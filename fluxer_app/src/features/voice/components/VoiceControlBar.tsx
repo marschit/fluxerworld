@@ -8,7 +8,7 @@ import {SoundType} from '@app/features/notification/utils/SoundUtils';
 import Permission from '@app/features/permissions/state/Permission';
 import NativePermission from '@app/features/permissions/system/state/NativePermission';
 import {Logger} from '@app/features/platform/utils/AppLogger';
-import {ComponentDispatch} from '@app/features/platform/utils/ComponentBus';
+import {ComponentBus} from '@app/features/platform/utils/ComponentBus';
 import {SoundboardPanel} from '@app/features/soundboard/components/SoundboardPanel';
 import Soundboard from '@app/features/soundboard/state/Soundboard';
 import {MenuGroup} from '@app/features/ui/action_menu/MenuGroup';
@@ -251,7 +251,7 @@ const VoiceControlBarInner = observer(function VoiceControlBarInner() {
 	const [moreOptionsOpen, setMoreOptionsOpen] = useState(false);
 
 	useEffect(() => {
-		return ComponentDispatch.subscribe('SOUNDBOARD_TOGGLE', () => {
+		return ComponentBus.subscribe('SOUNDBOARD_TOGGLE', () => {
 			if (MediaEngine.guildId) {
 				Soundboard.togglePanel();
 			}
